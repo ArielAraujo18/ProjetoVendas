@@ -1,0 +1,21 @@
+package br.com.projeto.jdbc;
+
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Ariel
+ */
+public class TestaConexao {
+    public static void main(String[] args) {
+        try {
+            
+            new ConnectionFactory().getConnection();
+            JOptionPane.showMessageDialog(null, "Conectado com Sucesso!");
+            
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, "Ops aconteceu um erro:" + e.getMessage());
+        }
+    }
+    
+}
