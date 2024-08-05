@@ -2119,7 +2119,7 @@ public class FrmClientes extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
+        jPanel1.setBackground(new java.awt.Color(0, 51, 51));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -2130,16 +2130,16 @@ public class FrmClientes extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel1)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -2174,7 +2174,7 @@ public class FrmClientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Nome: ", "RG", "CPF", "E-mail", "Telefone", "Celular", "CEP", "ENDEREÇO", "Nº", "Comp", "Bairro", "Cidade", "UF"
+                "Código", "Nome: ", "RG", "CPF", "E-mail", "Telefone", "Celular", "CEP", "Endereço", "Nº", "Comp", "Bairro", "Cidade", "UF"
             }
         ));
         tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2514,7 +2514,7 @@ public class FrmClientes extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Dados Pessoais", jPanel2);
 
-        jPanel18.setBackground(new java.awt.Color(153, 0, 153));
+        jPanel18.setBackground(new java.awt.Color(0, 51, 51));
 
         btnNovo.setBackground(new java.awt.Color(255, 255, 51));
         btnNovo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -2526,7 +2526,9 @@ public class FrmClientes extends javax.swing.JFrame {
             }
         });
 
+        btnSalvar.setBackground(new java.awt.Color(0, 204, 204));
         btnSalvar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(0, 0, 0));
         btnSalvar.setText("SALVAR");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2534,7 +2536,9 @@ public class FrmClientes extends javax.swing.JFrame {
             }
         });
 
+        btnEdit.setBackground(new java.awt.Color(0, 204, 204));
         btnEdit.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(0, 0, 0));
         btnEdit.setText("EDITAR");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2542,9 +2546,9 @@ public class FrmClientes extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
+        jButton5.setBackground(new java.awt.Color(204, 51, 0));
         jButton5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 0, 0));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("EXCLUIR");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2670,8 +2674,8 @@ public class FrmClientes extends javax.swing.JFrame {
     }                                            
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        //Botao save
 
+        // Botão Save
         Clientes obj = new Clientes();
 
         obj.setNome(txtNome.getText());
@@ -2682,7 +2686,15 @@ public class FrmClientes extends javax.swing.JFrame {
         obj.setCelular(txtCelular.getText());
         obj.setCep(txtCep.getText());
         obj.setEndereco(txtEnd.getText());
-        obj.setNc(Integer.parseInt(txtNC.getText()));
+
+// Verifica se o campo "txtNC" não é nulo ou vazio antes de converter para inteiro
+        String ncText = txtNC.getText().trim();
+        if (!ncText.isEmpty()) {
+            obj.setNc(Integer.parseInt(ncText));
+        } else {
+            obj.setNc(0); // ou outra lógica, como lançar uma exceção ou definir um valor padrão
+        }
+
         obj.setComplemento(txtComp.getText());
         obj.setBairro(txtBairro.getText());
         obj.setCidade(txtCidade.getText());
@@ -2693,9 +2705,11 @@ public class FrmClientes extends javax.swing.JFrame {
 
         new Utilitarios().LimpaTela(painel_dados);
 
+
     }                                         
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {                                        
+
         new Utilitarios().LimpaTela(painel_dados);
     }                                       
 
@@ -2753,47 +2767,85 @@ public class FrmClientes extends javax.swing.JFrame {
     }                                           
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        //Botao editar 
+// Botão editar 
 
-        Clientes obj = new Clientes();
-        
-        obj.setNome(txtNome.getText());
-        obj.setRg(txtRG.getText());
-        obj.setCpf(txtCPF.getText());
-        obj.setEmail(txtEmail.getText());
-        obj.setTelefone(txtTelFixo.getText());
-        obj.setCelular(txtCelular.getText());
-        obj.setCep(txtCep.getText());
-        obj.setEndereco(txtEnd.getText());
-        obj.setNc(Integer.parseInt(txtNC.getText()));
-        obj.setComplemento(txtComp.getText());
-        obj.setBairro(txtBairro.getText());
-        obj.setCidade(txtCidade.getText());
-        obj.setUf(cbUF.getSelectedItem().toString());
+Clientes obj = new Clientes();
 
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
+obj.setNome(txtNome.getText());
+obj.setRg(txtRG.getText());
+obj.setCpf(txtCPF.getText());
+obj.setEmail(txtEmail.getText());
+obj.setTelefone(txtTelFixo.getText());
+obj.setCelular(txtCelular.getText());
+obj.setCep(txtCep.getText());
+obj.setEndereco(txtEnd.getText());
 
-        ClientesDAO dao = new ClientesDAO();
+// Verifica se o campo "txtNC" não é nulo ou vazio antes de converter para inteiro
+String ncText = txtNC.getText().trim();
+if (!ncText.isEmpty()) {
+    try {
+        obj.setNc(Integer.parseInt(ncText));
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Número inválido para o campo 'Número'.");
+        obj.setNc(0); // Define um valor padrão ou trate conforme necessário
+    }
+} else {
+    obj.setNc(0); // Define um valor padrão ou trate conforme necessário
+}
 
-        dao.alterarCliente(obj);
+obj.setComplemento(txtComp.getText());
+obj.setBairro(txtBairro.getText());
+obj.setCidade(txtCidade.getText());
+obj.setUf(cbUF.getSelectedItem().toString());
 
-        new Utilitarios().LimpaTela(painel_dados);
+// Verifica se o campo "txtcodigo" não é nulo ou vazio antes de converter para inteiro
+String codigoText = txtcodigo.getText().trim();
+if (!codigoText.isEmpty()) {
+    try {
+        obj.setId(Integer.parseInt(codigoText));
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Código inválido. Por favor, insira um número válido.");
+        return; // Interrompe o fluxo, pois não há ID válido para editar
+    }
+} else {
+    JOptionPane.showMessageDialog(null, "Por favor, insira um código para editar.");
+    return; // Interrompe o fluxo, pois o código está vazio
+}
+
+ClientesDAO dao = new ClientesDAO();
+dao.alterarCliente(obj);
+
+new Utilitarios().LimpaTela(painel_dados);
+
 
 
     }                                       
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // Botao Excluir
 
+        // Botão Excluir
         Clientes obj = new Clientes();
 
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
+// Verifica se o campo "txtcodigo" não é nulo ou vazio antes de converter para inteiro
+        String codigoText = txtcodigo.getText().trim();
+        if (!codigoText.isEmpty()) {
+            try {
+                obj.setId(Integer.parseInt(codigoText));
+            } catch (NumberFormatException e) {
+                // Tratamento de erro para o caso de não conseguir converter o valor
+                JOptionPane.showMessageDialog(null, "Código inválido. Por favor, insira um número válido.");
+                return; // Interrompe o fluxo, pois não há ID válido para excluir
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um código para excluir.");
+            return; // Interrompe o fluxo, pois o código está vazio
+        }
 
         ClientesDAO dao = new ClientesDAO();
-        
         dao.excluirCliente(obj);
 
         new Utilitarios().LimpaTela(painel_dados);
+
 
     }                                        
 

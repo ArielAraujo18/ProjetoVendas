@@ -2581,7 +2581,9 @@ public class FrmFuncionarios extends javax.swing.JFrame {
             }
         });
 
+        btnSalvar.setBackground(new java.awt.Color(255, 255, 255));
         btnSalvar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(0, 0, 0));
         btnSalvar.setText("SALVAR");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2589,7 +2591,9 @@ public class FrmFuncionarios extends javax.swing.JFrame {
             }
         });
 
+        btnEdit.setBackground(new java.awt.Color(255, 255, 255));
         btnEdit.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(0, 0, 0));
         btnEdit.setText("EDITAR");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2597,9 +2601,9 @@ public class FrmFuncionarios extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
+        jButton5.setBackground(new java.awt.Color(255, 0, 0));
         jButton5.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 0, 0));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("EXCLUIR");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2732,28 +2736,36 @@ public class FrmFuncionarios extends javax.swing.JFrame {
 
         Funcionarios obj = new Funcionarios();
 
-        obj.setNome(txtNome.getText());
-        obj.setRg(txtRG.getText());
-        obj.setCpf(txtCPF.getText());
-        obj.setEmail(txtEmail.getText());
-        obj.setSenha(txtSenha.getText());
-        obj.setCargo(txtCargo.getText());
-        obj.setNivel_acesso(cbNivel.getSelectedItem().toString());
-        obj.setTelefone(txtTelFixo.getText());
-        obj.setCelular(txtCelular.getText());
-        obj.setCep(txtCep.getText());
-        obj.setEndereco(txtEnd.getText());
-        obj.setNc(Integer.parseInt(txtNC.getText()));
-        obj.setComplemento(txtComp.getText());
-        obj.setBairro(txtBairro.getText());
-        obj.setCidade(txtCidade.getText());
-        obj.setUf(cbUF.getSelectedItem().toString());
+    obj.setNome(txtNome.getText());
+    obj.setRg(txtRG.getText());
+    obj.setCpf(txtCPF.getText());
+    obj.setEmail(txtEmail.getText());
+    obj.setSenha(txtSenha.getText());
+    obj.setCargo(txtCargo.getText());
+    obj.setNivel_acesso(cbNivel.getSelectedItem().toString());
+    obj.setTelefone(txtTelFixo.getText());
+    obj.setCelular(txtCelular.getText());
+    obj.setCep(txtCep.getText());
+    obj.setEndereco(txtEnd.getText());
 
-        FuncionariosDAO dao = new FuncionariosDAO();
-        dao.cadastrarFuncionarios(obj);
+    // Verifique se o campo txtNC não está vazio antes de converter para inteiro
+    String ncText = txtNC.getText();
+    if (ncText != null && !ncText.trim().isEmpty()) {
+        obj.setNc(Integer.parseInt(ncText));
+    } else {
+        obj.setNc(0); // Ou qualquer valor padrão que você deseja usar
+    }
 
-        new Utilitarios().LimpaTela(painel_dados);
+    obj.setComplemento(txtComp.getText());
+    obj.setBairro(txtBairro.getText());
+    obj.setCidade(txtCidade.getText());
+    obj.setUf(cbUF.getSelectedItem().toString());
 
+    FuncionariosDAO dao = new FuncionariosDAO();
+    dao.cadastrarFuncionarios(obj);
+
+    new Utilitarios().LimpaTela(painel_dados);
+    
     }                                         
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {                                        
@@ -2823,6 +2835,7 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         //Botao editar 
 
         Funcionarios obj = new Funcionarios();
+
         obj.setNome(txtNome.getText());
         obj.setRg(txtRG.getText());
         obj.setCpf(txtCPF.getText());
@@ -2834,16 +2847,28 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         obj.setCelular(txtCelular.getText());
         obj.setCep(txtCep.getText());
         obj.setEndereco(txtEnd.getText());
-        obj.setNc(Integer.parseInt(txtNC.getText()));
+
+        // Verifique se o campo txtNC não está vazio antes de converter para inteiro
+        String ncText = txtNC.getText();
+        if (ncText != null && !ncText.trim().isEmpty()) {
+            try {
+                obj.setNc(Integer.parseInt(ncText));
+            } catch (NumberFormatException e) {
+                // Tratar o erro ou definir um valor padrão
+                obj.setNc(0);
+                // Opcionalmente, exibir uma mensagem de erro para o usuário
+                JOptionPane.showMessageDialog(this, "Número de cadastro inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            obj.setNc(0); // Ou qualquer valor padrão que você deseja usar
+        }
+
         obj.setComplemento(txtComp.getText());
         obj.setBairro(txtBairro.getText());
         obj.setCidade(txtCidade.getText());
         obj.setUf(cbUF.getSelectedItem().toString());
 
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
         FuncionariosDAO dao = new FuncionariosDAO();
-
         dao.alterarFuncionarios(obj);
 
         new Utilitarios().LimpaTela(painel_dados);
@@ -2852,18 +2877,26 @@ public class FrmFuncionarios extends javax.swing.JFrame {
     }                                       
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // Botao Excluir
+        // Botão Excluir
 
-        Funcionarios obj = new Funcionarios();
+// Verifica se o campo de código não está vazio
+        if (!txtcodigo.getText().trim().isEmpty()) {
+            try {
+                Funcionarios obj = new Funcionarios();
+                obj.setId(Integer.parseInt(txtcodigo.getText()));
 
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
+                FuncionariosDAO dao = new FuncionariosDAO();
+                dao.excluirFuncionarios(obj);
 
-        FuncionariosDAO dao = new FuncionariosDAO();
-
-        dao.excluirFuncionarios(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
+                new Utilitarios().LimpaTela(painel_dados);
+            } catch (NumberFormatException e) {
+                // Exibe uma mensagem de erro se o texto não for um número válido
+                JOptionPane.showMessageDialog(null, "Código inválido. Por favor, insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // Exibe uma mensagem de erro se o campo estiver vazio
+            JOptionPane.showMessageDialog(null, "O campo de código está vazio. Por favor, insira um código para excluir.", "Erro", JOptionPane.WARNING_MESSAGE);
+        }
     }                                        
 
     private void txtPesquisaActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -2908,12 +2941,12 @@ public class FrmFuncionarios extends javax.swing.JFrame {
     }                                         
 
     private void pesquisaBtnActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        //Botao buscar cliente por nome
+        //Botao buscar Funcionarios por nome
         try {
 
             String nome = txtNome.getText();
-            Clientes obj = new Clientes();
-            ClientesDAO dao = new ClientesDAO();
+            Funcionarios obj = new Funcionarios();
+            FuncionariosDAO dao = new FuncionariosDAO();
 
             obj = dao.consultaPorNome(nome);
 
@@ -2926,6 +2959,9 @@ public class FrmFuncionarios extends javax.swing.JFrame {
                 txtRG.setText(obj.getRg());
                 txtCPF.setText(obj.getCpf());
                 txtEmail.setText(obj.getEmail());
+                txtSenha.setText(obj.getSenha());
+                txtCargo.setText(obj.getCargo());
+                cbNivel.setSelectedItem(obj.getNivel_acesso());
                 txtTelFixo.setText(obj.getTelefone());
                 txtCelular.setText(obj.getCelular());
                 txtCep.setText(obj.getCep());
