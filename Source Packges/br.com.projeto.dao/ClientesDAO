@@ -91,12 +91,13 @@ public class ClientesDAO {
     public Clientes consultaPorNome(String nome){
         try {
             
-            String sql = "select * from tb_clientes where nome =?";
+            String sql = "select * from tb_clientes where nome = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, "%" + nome + "%");
-            ResultSet rs = stmt.executeQuery();
+            stmt.setString(1, nome);
             
             ResultSet rs = stmt.executeQuery();
+            
+          
             
             Clientes obj = new Clientes();
             
@@ -128,7 +129,7 @@ public class ClientesDAO {
         }
     }
 
-    // Metodo de listar clientes por nome
+    // Metodo de buscar clientes por nome
     public List<Clientes> buscaClientePorNome(String nome) {
         try {
             List<Clientes> lista = new ArrayList<>();
@@ -166,11 +167,16 @@ public class ClientesDAO {
     public List<Clientes> listarClientes() {
         try {
             List<Clientes> lista = new ArrayList<>();
+            
             String sql = "select * from tb_clientes";
             PreparedStatement stmt = con.prepareStatement(sql);
+            
             ResultSet rs = stmt.executeQuery();
+            
             while (rs.next()) {
+                
                 Clientes obj = new Clientes();
+                
                 obj.setId(rs.getInt("id"));
                 obj.setNome(rs.getString("nome"));
                 obj.setRg(rs.getString("rg"));
@@ -215,6 +221,4 @@ public class ClientesDAO {
         }
 
     }
-
-    
 }

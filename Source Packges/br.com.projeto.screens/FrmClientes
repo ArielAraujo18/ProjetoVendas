@@ -2580,7 +2580,7 @@ public class FrmClientes extends javax.swing.JFrame {
                     .addComponent(btnSalvar)
                     .addComponent(btnEdit)
                     .addComponent(jButton5))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -2602,6 +2602,7 @@ public class FrmClientes extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>                        
 
     private void txtRGActionPerformed(java.awt.event.ActionEvent evt) {                                      
