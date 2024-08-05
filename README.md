@@ -1,2 +1,2 @@
 # ProjetoVendas
- Este é um projeto de vendas. Ainda está em desenvolvimento
+ Este é um programa de controle de vendas, ainda está em desenvolvimento.
