@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS tb_funcionarios (
   rg VARCHAR(30),
   cpf VARCHAR(20),
   email VARCHAR(200),
-  senha VARCHAR(10),
+  senha VARCHAR(30),
   cargo VARCHAR(100),
   nivel_acesso VARCHAR(50),
   telefone VARCHAR(30),
