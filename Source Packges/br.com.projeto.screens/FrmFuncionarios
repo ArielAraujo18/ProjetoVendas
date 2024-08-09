@@ -2268,6 +2268,11 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         jLabel6.setText("E-mail:");
 
         txtEmail.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
@@ -2833,35 +2838,51 @@ public class FrmFuncionarios extends javax.swing.JFrame {
     }                                               
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        //Botao editar 
-
+    
+        // Criação do objeto Funcionarios
         Funcionarios obj = new Funcionarios();
 
+        // Define os campos no objeto Funcionarios
         obj.setNome(txtNome.getText());
         obj.setRg(txtRG.getText());
         obj.setCpf(txtCPF.getText());
         obj.setEmail(txtEmail.getText());
-        obj.setSenha(txtSenha.getText());
-        obj.setCargo(txtCargo.getText());
+
+        // Verifica se o campo de senha não está vazio
+        String senhaText = txtSenha.getText().trim();
+        if (senhaText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "O campo de senha não pode estar vazio.");
+            return; // Interrompe o fluxo, pois a senha é obrigatória
+        }
+        obj.setSenha(senhaText);
+
+        // Verifica se o campo de cargo não está vazio
+        String cargoText = txtCargo.getText().trim();
+        if (cargoText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "O campo de cargo não pode estar vazio.");
+            return; // Interrompe o fluxo, pois o cargo é obrigatório
+        }
+        obj.setCargo(cargoText);
+
+        // Define o nível de acesso a partir da combo box
         obj.setNivel_acesso(cbNivel.getSelectedItem().toString());
+
         obj.setTelefone(txtTelFixo.getText());
         obj.setCelular(txtCelular.getText());
         obj.setCep(txtCep.getText());
         obj.setEndereco(txtEnd.getText());
 
-        // Verifique se o campo txtNC não está vazio antes de converter para inteiro
-        String ncText = txtNC.getText();
-        if (ncText != null && !ncText.trim().isEmpty()) {
+        // Verifica se o campo "txtNC" não é nulo ou vazio antes de converter para inteiro
+        String ncText = txtNC.getText().trim();
+        if (!ncText.isEmpty()) {
             try {
                 obj.setNc(Integer.parseInt(ncText));
             } catch (NumberFormatException e) {
-                // Tratar o erro ou definir um valor padrão
-                obj.setNc(0);
-                // Opcionalmente, exibir uma mensagem de erro para o usuário
-                JOptionPane.showMessageDialog(this, "Número de cadastro inválido", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Número inválido para o campo 'Número'.");
+                obj.setNc(0); // Define um valor padrão ou trate conforme necessário
             }
         } else {
-            obj.setNc(0); // Ou qualquer valor padrão que você deseja usar
+            obj.setNc(0); // Define um valor padrão ou trate conforme necessário
         }
 
         obj.setComplemento(txtComp.getText());
@@ -2869,11 +2890,26 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         obj.setCidade(txtCidade.getText());
         obj.setUf(cbUF.getSelectedItem().toString());
 
+        // Verifica se o campo "txtId" não é nulo ou vazio antes de converter para inteiro
+        String idText = txtcodigo.getText().trim();
+        if (!idText.isEmpty()) {
+            try {
+                obj.setId(Integer.parseInt(idText));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "ID inválido. Por favor, insira um número válido.");
+                return; // Interrompe o fluxo, pois não há ID válido para editar
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um ID para editar.");
+            return; // Interrompe o fluxo, pois o ID está vazio
+        }
+
+        // Atualiza o funcionário no banco de dados
         FuncionariosDAO dao = new FuncionariosDAO();
         dao.alterarFuncionarios(obj);
 
+        // Limpa a tela após a atualização
         new Utilitarios().LimpaTela(painel_dados);
-
 
     }                                       
 
@@ -3023,6 +3059,10 @@ public class FrmFuncionarios extends javax.swing.JFrame {
     private void cbNivelActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
     }                                       
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    }                                        
 
 
     public static void main(String args[]) {
