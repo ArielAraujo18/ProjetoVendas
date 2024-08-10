@@ -2251,6 +2251,11 @@ public class FrmProdutos extends javax.swing.JFrame {
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        cbFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbFornecedorMouseClicked(evt);
+            }
+        });
         cbFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbFornecedorActionPerformed(evt);
@@ -2468,45 +2473,58 @@ public class FrmProdutos extends javax.swing.JFrame {
 
         String nome = "%" + txtPesquisa.getText() + "%";
 
-        ClientesDAO dao = new ClientesDAO();
-        List<Clientes> lista = dao.buscaClientePorNome(nome);
+        ProdutosDAO dao = new ProdutosDAO();
+        List<Produtos> lista = dao.listarProdutosPorNome(nome);
 
         DefaultTableModel dados = (DefaultTableModel) tabelaProdutos.getModel();
         dados.setNumRows(0);
 
-        for (Clientes c : lista) {
+        for (Produtos c : lista) {
             dados.addRow(new Object[]{
                 c.getId(),
-                c.getNome(),
-                c.getRg(),
-                c.getCpf(),
-                c.getEmail(),
-                c.getTelefone(),
-                c.getCelular(),
-                c.getCep(),
-                c.getEndereco(),
-                c.getNc(),
-                c.getComplemento(),
-                c.getBairro(),
-                c.getCidade(),
-                c.getUf()
+                c.getDescricao(),
+                c.getPreco(),
+                c.getQtd_estoque(),
+                c.getFornecedor().getNome()
             });
         }
 
     }                                            
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {                                          
-
-        // Botão Save
+// Botão Save
         Produtos obj = new Produtos();
 
-        obj.setDescricao(txtDescricao.getText());
-        obj.setPreco(Double.parseDouble(txtPreco.getText()));
-        obj.setQtd_estoque(Integer.parseInt(txtQTD.getText()));
-        
-        //Criar objeto de fornecedor
-        Fornecedores f = new Fornecedores();
-        f = (Fornecedores) cbFornecedor.getSelectedItem();        
+        obj.setDescricao(txtDescricao.getText().trim());
+
+// Validação para o campo de preço
+        if (txtPreco.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de preço não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setPreco(Double.parseDouble(txtPreco.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Preço inválido. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Validação para o campo de quantidade
+        if (txtQTD.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de quantidade não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setQtd_estoque(Integer.parseInt(txtQTD.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantidade inválida. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Criar objeto de fornecedor
+        Fornecedores f = (Fornecedores) cbFornecedor.getSelectedItem();
         obj.setFornecedor(f);
 
         ProdutosDAO dao = new ProdutosDAO();
@@ -2514,7 +2532,7 @@ public class FrmProdutos extends javax.swing.JFrame {
 
         new Utilitarios().LimpaTela(painel_dados);
 
-
+        
     }                                         
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {                                        
@@ -2553,24 +2571,59 @@ public class FrmProdutos extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
 // Botão editar 
 
-        Produtos obj = new Produtos();
+        // Botão Editar
+Produtos obj = new Produtos();
 
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-        obj.setDescricao(txtDescricao.getText());
-        obj.setPreco(Double.parseDouble(txtPreco.getText()));
-        obj.setQtd_estoque(Integer.parseInt(txtQTD.getText()));
-        
-        //Criar um objeto de fornecedor
-        Fornecedores f = new Fornecedores();
-        f = (Fornecedores) cbFornecedor.getSelectedItem();
-        
+// Validação para o campo de código
+        if (txtcodigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de código não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setId(Integer.parseInt(txtcodigo.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Código inválido. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        obj.setDescricao(txtDescricao.getText().trim());
+
+// Validação para o campo de preço
+        if (txtPreco.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de preço não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setPreco(Double.parseDouble(txtPreco.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Preço inválido. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Validação para o campo de quantidade
+        if (txtQTD.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de quantidade não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setQtd_estoque(Integer.parseInt(txtQTD.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantidade inválida. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Criar objeto de fornecedor
+        Fornecedores f = (Fornecedores) cbFornecedor.getSelectedItem();
         obj.setFornecedor(f);
-
 
         ProdutosDAO dao = new ProdutosDAO();
         dao.alterarProdutos(obj);
 
-        new Utilitarios().LimpaTela(painel_dados);
+new Utilitarios().LimpaTela(painel_dados);
+
 
 
     }                                       
@@ -2578,11 +2631,21 @@ public class FrmProdutos extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
 
         // Botão Excluir
-        
         Produtos obj = new Produtos();
-        
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-        
+
+// Validação para o campo de código
+        if (txtcodigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O campo de código não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            obj.setId(Integer.parseInt(txtcodigo.getText().trim()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Código inválido. Insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         ProdutosDAO dao = new ProdutosDAO();
         dao.excluirProdutos(obj);
 
@@ -2597,33 +2660,27 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {                                       
 
+// Keypress
+
         String nome = "%" + txtPesquisa.getText() + "%";
 
-        ClientesDAO dao = new ClientesDAO();
-        List<Clientes> lista = dao.listarClientes();
+        ProdutosDAO dao = new ProdutosDAO();
+        List<Produtos> lista = dao.listarProdutosPorNome(nome);
 
         DefaultTableModel dados = (DefaultTableModel) tabelaProdutos.getModel();
         dados.setNumRows(0);
 
-        for (Clientes c : lista) {
+        for (Produtos c : lista) {
             dados.addRow(new Object[]{
                 c.getId(),
-                c.getNome(),
-                c.getRg(),
-                c.getCpf(),
-                c.getEmail(),
-
-                c.getTelefone(),
-                c.getCelular(),
-                c.getCep(),
-                c.getEndereco(),
-                c.getNc(),
-                c.getComplemento(),
-                c.getBairro(),
-                c.getCidade(),
-                c.getUf()
+                c.getDescricao(),
+                c.getPreco(),
+                c.getQtd_estoque(),
+                c.getFornecedor().getNome()
             });
         }
+
+
     }                                      
 
     private void txtcodigo1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -2652,27 +2709,32 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void pesquisaBtnActionPerformed(java.awt.event.ActionEvent evt) {                                            
         //Botao buscar cliente por nome
-        try {
 
-            String nome = txtDescricao.getText();
-            Clientes obj = new Clientes();
-            ClientesDAO dao = new ClientesDAO();
+        String nome = txtDescricao.getText();
+        Produtos obj = new Produtos();
+        ProdutosDAO dao = new ProdutosDAO();
 
-            obj = dao.consultaPorNome(nome);
+        obj = dao.consultaPorNome(nome);
+        cbFornecedor.removeAllItems();
 
-            if (obj.getNome() != null) {
+        if (obj.getDescricao() != null) {
 
-                //Exibe os dados nos campos de Texto
-                jTabbedPane1.setSelectedIndex(1);
-                txtcodigo.setText(String.valueOf(obj.getId()));
-                txtDescricao.setText(obj.getNome());
-                txtPreco.setText(obj.getEmail());
-                cbFornecedor.setSelectedItem(tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 13).toString());
+            //Exibe os dados nos campos de Texto
+            jTabbedPane1.setSelectedIndex(1);
+            txtcodigo.setText(String.valueOf(obj.getId()));
+            txtDescricao.setText(obj.getDescricao());
+            txtPreco.setText(String.valueOf(obj.getPreco()));
+            txtQTD.setText(String.valueOf(obj.getQtd_estoque()));
 
-            } else {
-                JOptionPane.showMessageDialog(null, "Cliente não encontrado! ");
-            }
-        } catch (Exception e) {
+            Fornecedores f = new Fornecedores();
+            FornecedoresDAO fdao = new FornecedoresDAO();
+            
+            f = fdao.consultaPorNome(obj.getFornecedor().getNome());
+            
+            cbFornecedor.getModel().setSelectedItem(f);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado! ");
         }
     }                                           
 
@@ -2696,6 +2758,17 @@ public class FrmProdutos extends javax.swing.JFrame {
         
         }
     }                                          
+
+    private void cbFornecedorMouseClicked(java.awt.event.MouseEvent evt) {                                          
+        FornecedoresDAO dao = new FornecedoresDAO();
+        
+        List<Fornecedores> listaDeFornecedores = dao.listarFornecedores();
+        cbFornecedor.removeAllItems();
+        
+        for(Fornecedores f : listaDeFornecedores){
+            cbFornecedor.addItem(f);
+        }
+    }                                         
 
 
     public static void main(String args[]) {
