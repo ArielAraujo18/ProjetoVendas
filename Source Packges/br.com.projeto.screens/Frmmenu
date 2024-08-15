@@ -25,7 +25,7 @@ public class FrmMenU extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/imagens/avsS.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/imagens/avsP.jpg"));
 
         Image image = icon.getImage();
         painelPane = new javax.swing.JDesktopPane(){
@@ -178,7 +178,7 @@ public class FrmMenU extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(painelPane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(painelPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

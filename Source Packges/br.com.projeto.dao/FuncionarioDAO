@@ -3,7 +3,7 @@ package br.com.projeto.dao;
 import br.com.projeto.jdbc.ConnectionFactory;
 import java.sql.Connection;
 import br.com.projeto.model.Funcionarios;
-import br.com.projeto.screens.Frmmenu;
+import br.com.projeto.screens.FrmMenU;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -264,7 +264,8 @@ public class FuncionariosDAO {
             //Usuario logou
                 JOptionPane.showMessageDialog(null, "Seja bem vindo ao sistema");
                 
-                Frmmenu tela = new Frmmenu();
+                FrmMenU tela = new FrmMenU();
+                tela.usuarioLogado = rs.getString("nome");
                 tela.setVisible(true);
                 
             }else{
@@ -274,7 +275,7 @@ public class FuncionariosDAO {
             
         }catch(SQLException e){
             
-            JOptionPane.showMessageDialog(null, "Erro: " + e);
+            JOptionPane.showMessageDialog(null, "Erro, insira os dados corretos " + e);
             
         }
     }

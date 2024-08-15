@@ -221,4 +221,44 @@ public class ClientesDAO {
         }
 
     }
+    public Clientes buscaPorCpf(String cpf) {
+        String sql = "select * from tb_clientes where cpf = ?";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, cpf);
+            System.out.println("Buscando cliente com CPF: " + cpf);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Cliente encontrado.");
+                Clientes obj = new Clientes();
+                obj.setId(rs.getInt("id"));
+                obj.setNome(rs.getString("nome"));
+                obj.setRg(rs.getString("rg"));
+                obj.setCpf(rs.getString("cpf"));
+                obj.setEmail(rs.getString("email"));
+                obj.setTelefone(rs.getString("telefone"));
+                obj.setCelular(rs.getString("celular"));
+                obj.setCep(rs.getString("cep"));
+                obj.setEndereco(rs.getString("endereco"));
+                obj.setNc(rs.getInt("numero"));
+                obj.setComplemento(rs.getString("complemento"));
+                obj.setBairro(rs.getString("bairro"));
+                obj.setCidade(rs.getString("cidade"));
+                obj.setUf(rs.getString("estado"));
+                return obj;
+            } else {
+                System.out.println("Nenhum cliente encontrado com esse CPF.");
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao buscar cliente: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    
 }
